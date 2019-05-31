@@ -16,6 +16,8 @@ public class AnimationManager {
 	public static final int TYPE_MOVE_IN = 4;
 	public static final int TYPE_MOVE_OUT = 5;
 	public static final int TYPE_MOVE = 6;
+	public static final int TYPE_FADE_IN = 7;
+	public static final int TYPE_FADE_OUT = 8;
 	
 	public static final int ARROW_LEFT = 1;
 	public static final int ARROW_RIGHT = 2;
@@ -65,30 +67,41 @@ public class AnimationManager {
 			timeRunning = runningTime;
 		}
 
-		public void setAnimationNothing(int runnungTime) {
+		public void setAnimationNothing(int runningTime) {
 			type = TYPE_NOTHING;
 
-			init(runnungTime);
+			init(runningTime);
 		}
 		
-		public void setAnimationZoomIn(int runnungTime) {
+		public void setAnimationZoomIn(int runningTime) {
 			type = TYPE_ZOOM_IN;
 
-			init(runnungTime);
+			init(runningTime);
 		}
 		
-		public void setAnimationZoomOut(int runnungTime) {
+		public void setAnimationZoomOut(int runningTime) {
 			type = TYPE_ZOOM_OUT;
 
-			init(runnungTime);
+			init(runningTime);
 		}
 		
-		public void setAnimationScale(int runnungTime, float srcScale, float destScale) {
+		public void setAnimationScale(int runningTime, float srcScale, float destScale) {
 			type = TYPE_SCALE;
 			scale = 1f - destScale;
 			
-			init(runnungTime);
+			init(runningTime);
 		}
+
+		public void setAnimationFadeIn(int runningTime) {
+			type = TYPE_FADE_IN;
+			init(runningTime);
+		}
+
+		public void setAnimationFadeOut(int runningTime) {
+			type = TYPE_FADE_OUT;
+			init(runningTime);
+		}
+
 		
 		public void setAnimationMoveIn(int runnungTime, int arrow, Box box) {
 			type = TYPE_MOVE_IN;
@@ -217,13 +230,23 @@ public class AnimationManager {
 				return 1;
 			}
 		}
-		
+
 		public int getPositionLeft() {
 			return (int) ((destLeft - startLeft) * getSmoothProgress(progress) / 1000 + startLeft);
 		}
 		
 		public int getPositionTop() {
 			return (int) ((destTop - startTop) * getSmoothProgress(progress) / 1000 + startTop);
+		}
+
+		public int getAlpha() {
+			if (type == TYPE_FADE_IN) {
+				return (int) progress;
+			} else if (type == TYPE_FADE_OUT) {
+				return (int) (1000 - progress);
+			}
+
+			return 1000;
 		}
 		
 		private float getSmoothProgress(float progress) {
