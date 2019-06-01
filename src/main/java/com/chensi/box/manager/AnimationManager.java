@@ -239,14 +239,14 @@ public class AnimationManager {
 			return (int) ((destTop - startTop) * getSmoothProgress(progress) / 1000 + startTop);
 		}
 
-		public int getAlpha() {
+		public float getAlpha() {
 			if (type == TYPE_FADE_IN) {
-				return (int) progress;
+				return progress / 1000;
 			} else if (type == TYPE_FADE_OUT) {
-				return (int) (1000 - progress);
+				return (1000 - progress) / 1000;
 			}
 
-			return 1000;
+			return 1f;
 		}
 		
 		private float getSmoothProgress(float progress) {
@@ -270,6 +270,7 @@ public class AnimationManager {
 
 		int left = info.getPositionLeft();
 		int top = info.getPositionTop();
+		float alpha = info.getAlpha();
 		
 //		if (newScale != 1) {
 //			// draw box to new scaled location.
@@ -280,7 +281,9 @@ public class AnimationManager {
 //		}
 
 		gl10.glScalef(newScale, newScale, 1f);
+		gl10.glColor4f(1f, 1f, 1f, alpha);
 		box.draw(gl10, paint, left, top);
+		gl10.glColor4f(1f, 1f, 1f, 1f);
 		gl10.glScalef(1f / newScale, 1f / newScale, 1f);
 
 		// run next do.
