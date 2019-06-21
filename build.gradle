@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        //noinspection GradleDependency : Galaxy Build 2.0 does not support gradle tool 3.4
+        classpath 'com.android.tools.build:gradle:3.1.0'
+    }
+}
 apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
